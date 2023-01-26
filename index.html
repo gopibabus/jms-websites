@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<style>
+    body {
+        background-color: sandybrown;
+        font-family: 'Roboto Condensed', sans-serif;
+    }
+    .content {
+        max-width: 1000px;
+        margin: 0 auto 2rem;
+        background-color: wheat;
+    }
+    .content-wrapper {
+        padding: 1rem;
+    }
+    .sandbox-settings label {
+        font-size: .9rem;
+    }
+    .sandbox-settings input[name="sbid"] {
+        width: 30px;
+    }
+    .topsection .sblink {
+        transition: opacity 250ms linear;
+        opacity: 1;
+    }
+    .topsection.nosb .sblink {
+        opacity: 0;
+    }
+    .topsection.nosb .fs-port {
+        display: none;
+    }
+    .row {
+        clear: both;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+    .col {
+        float: left;
+        padding: .5rem;
+        background-color: #f7f7f3;
+        margin-bottom: 1rem;
+        border-radius: 7px;
+        box-shadow: 0px 3px 12px -2px rgba(0,0,0,0.5);
+        -webkit-box-shadow: 0px 3px 12px -2px rgba(0,0,0,0.5);
+        -moz-box-shadow: 0px 3px 12px -2px rgba(0,0,0,0.5);
+        border: 1px solid #fff;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    .col li {
+        border-bottom: 1px dashed #ccc;
+        padding: 2px 5px;
+        font-size: .75rem;
+        transition: background-color 200ms linear;
+        display: flex;
+        min-width: 260px;
+    }
+    .col li.li-auth {
+        background-color: #fff;
+    }
+    .col li:hover {
+        background-color: #8dc73f;
+        color: #fff;
+        box-shadow: 1px 1px 15px -4px rgba(0,0,0,0.53);
+        -webkit-box-shadow: 1px 1px 15px -4px rgba(0,0,0,0.53);
+        -moz-box-shadow: 1px 1px 15px -4px rgba(0,0,0,0.53);
+    }
+    .col li:hover a {
+        background-color: #f7f7f3;
+        color: #333;
+    }
+    .col li a {
+        padding: .25rem .35rem;
+        display: inline-block;
+        text-decoration: none;
+        outline-style: solid;
+        outline-color: #fff;
+        outline-width: 1px;
+    }
+    .col li a:focus {
+        background-color: #8dc73f;
+    }
+    .col li a:hover {
+        color: #fff;
+        background-color: #ed1c24;
+        outline-style: solid;
+        outline-color: #fff;
+        outline-width: 1px;
+    }
+    .col .col a {
+        display: inline-block;
+    }
+    h3, h4 {
+        font-family: 'Roboto Condensed', sans-serif;
+    }
+    h4 {
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+        border-bottom: 1px solid #333;
+    }
+    fieldset {
+        border-style: none;
+        margin: 0 0 .5rem;
+        padding: 0;
+        display: flex;
+        align-items: flex-end;
+    }
+    fieldset label {
+        font-size: .75rem;
+        min-width: 35px;
+    }
+    fieldset label:first-of-type {
+        font-weight: bold;
+        margin-right: .5rem;
+        margin-left: .3rem;
+    }
+    .fs-port input[type="text"] {
+        width: 40px;
+        margin: 0 .25rem;
+    }
+    .fs-port label:hover {
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .fs-port input[type="radio"]:checked + label {
+        font-weight: bold;
+    }
+    .col .name,
+    .col .site,
+    .col .links {
+        display: inline-block;
+    }
+    .name { 
+        min-width: 45px; 
+        font-weight: bold;
+    }
+    .site {
+        width: 115px;
+        padding-right: .5rem;
+    }
+    .links { min-width: 50px; }
+    .logo,
+    .sandbox-settings {
+        flex-basis: 100%;
+        text-align: center;
+        margin: 1rem;
+    }
+    .logo {
+        margin-bottom: 0;
+    }
+    .logo img {
+        width: 200px;
+    }
+    .footer ul {
+        margin-bottom: 1rem;
+    }
+    .footer li {
+        display: inline-block;
+    }
+    .footer a {
+        margin-right: .5rem;
+    }
+    .footer a:hover {
+        background-color: #8dc73f;
+    }
+    @media screen and (max-width: 896px) {
+        .col {
+            min-width: 45%;
+        }
+    }
+    @media screen and (min-width: 326px) and (max-width: 608px) {
+        .col {
+            min-width: 90%;
+        }
+    }
+</style>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="row content topsection">
+    <div class="logo"><img src="https://www.jmsmucker.com/bundles/jmsmucker/img/jms-logo-tagline.svg" alt=""></div>
+    <div class="sandbox-settings">
+        <label for="sbid">Sandbox id:</label>
+        <input type="text" id="sbid" name="sbid">
+    </div>
+    <div class="col stack">
+        <h4>CONSUMER</h4>
+        <div class="port">
+            <fieldset id="a_fs-port" class="fs-port"><label>SB PORT:</label>
+                <input type="radio" id="a_none" value="" name="a_port" class="first-rdo"><label for="a_none">None</label>
+                <input type="radio" id="a_20001" value="20001" name="a_port"><label for="a_20001">20001</label>
+                <input type="radio" id="a_20002" value="20002" name="a_port"><label for="a_20002">20002</label>
+            </fieldset>
+        </div>
+        <ul>
+            <li>
+                <div class="name">ADM</div>
+                <div class="site">Adams</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="adamspeanutbutter">SB</a>
+                    <a href="https://s6-adamspeanutbutter.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://adamspeanutbutter.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">CRI</div>
+                <div class="site">Crisco</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="crisco">SB</a>
+                    <a href="https://s6-crisco.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://crisco.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">CB</div>
+                <div class="site">Crosse And Blackwell</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="crosseandblackwell">SB</a>
+                    <a href="https://s6-crosseandblackwell.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://crosseandblackwell.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">DIC</div>
+                <div class="site">Dickinsons Family</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="dickinsonsfamily">SB</a>
+                    <a href="https://s6-dickinsonsfamily.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://dickinsonsfamily.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">JIF</div>
+                <div class="site">Jif</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="jif">SB</a>
+                    <a href="https://s6-jif.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://jif.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">JIF</div>
+                <div class="site">Jif Legacy</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="jiflegacy">SB</a>
+                    <a href="https://s6e-jif.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://p6e-jif.jmsinf.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">KBF</div>
+                <div class="site">Knotts Berry Farmfoods</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="knottsberryfarmfoods">SB</a>
+                    <a href="https://s6-knottsberryfarmfoods.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://knottsberryfarmfoods.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">LS</div>
+                <div class="site">Laura Scudder's</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="laurascudderspeanutbutter">SB</a>
+                    <a href="https://s6-laurascudderspeanutbutter.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://laurascudderspeanutbutter.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">LovePBJ</div>
+                <div class="site">LovePBJ</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="lovepbj">SB</a>
+                    <a href="https://s6-lovepbj.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://lovepbj.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">NBREW</div>
+                <div class="site">Natural Brew</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="naturalbrew">SB</a>
+                    <a href="https://s6-naturalbrew.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://natural-brew.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">NS</div>
+                <div class="site">None Such</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="nonesuchrecipes">SB</a>
+                    <a href="https://s6-nonesuchrecipes.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://nonesuchrecipes.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">RWK</div>
+                <div class="site">RW Knudsen</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="rwknudsenfamily">SB</a>
+                    <a href="https://s6-rwknudsenfamily.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://rwknudsenfamily.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">SAH</div>
+                <div class="site">Sahale Snacks</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="sahalesnacks">SB</a>
+                    <a href="https://s6-sahalesnacks.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://sahalesnacks.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">SCO</div>
+                <div class="site">Santa Cruz Organic</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="santacruzorganic">SB</a>
+                    <a href="https://s6-santacruzorganic.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://santacruzorganic.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">SMU</div>
+                <div class="site">Smuckers</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="smuckers">SB</a>
+                    <a href="https://s6-smuckers.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://smuckers.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">UNC</div>
+                <div class="site">Uncrustables</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="smuckersuncrustables">SB</a>
+                    <a href="https://s6-smuckersuncrustables.jmsinf.com" target="_blank">STG</a>
+                    <a href="https://smuckersuncrustables.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">UNC</div>
+                <div class="site">Uncrustables Legacy</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="smuckersuncrustableslegacy">SB</a>
+                    <a href="https://s6e-smuckersuncrustables.jmsinf.com" target="_blank">STG</a>
+                    <a href="https://p6e-smuckersuncrustables.jmsinf.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">TRU</div>
+                <div class="site">Truroots</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="truroots">SB</a>
+                    <a href="https://s6-truroots.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://truroots.com" target="_blank">PRD</a>
+                </div></li>
+            <li class="li-auth">
+                <div class="name">AUTH</div>
+                <div class="site"></div>
+                <div class="links">
+                    <a href="#" class="sblink auth" target="_blank" data-name="">SB</a>
+                    <a href="https://s-pmc6-mkt-consumer-admin.jmsinf.com/admin/login" target="_blank">STG</a>
+                    <a href="https://p-pmc6-mkt-consumer-admin.jmsinf.com/admin/login" target="_blank">PRD</a>
+                </div></li>
+        </ul>
+    </div>
+
+    <div class="col stack">
+        <h4>PET</h4>
+        <div class="port">
+            <fieldset id="b_fs-port" class="fs-port"><label>SB PORT:</label>
+                <input type="radio" id="b_none" value="" name="b_port" class="first-rdo"><label for="b_none">None</label>
+                <input type="radio" id="b_20001" value="20001" name="b_port"><label for="b_20001">20001</label>
+                <input type="radio" id="b_20002" value="20002" name="b_port"><label for="b_20002">20002</label>
+            </fieldset>
+        </div>
+        <ul>
+            <li>
+                <div class="name">9L</div>
+                <div class="site">9 Lives</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="9lives">SB</a>
+                    <a href="https://s6-9lives.jmsinf.com" target="_blank">STG</a>
+                    <a href="https://9lives.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">BTB</div>
+                <div class="site">Better Than Brands</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="betterthanbrands">SB</a>
+                    <a href="https://s6-betterthanbrands.jmsinf.com" target="_blank">STG</a>
+                    <a href="https://betterthanbrands.com" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">CCO</div>
+                <div class="site">Canine Carry Outs</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="caninecarryouts">SB</a>
+                    <a href="https://s6-caninecarryouts.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://caninecarryouts.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">DPF</div>
+                <div class="site">Dads Pet Foods</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="dadspetfoods">SB</a>
+                    <a href="https://s6-dadspetfoods.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://dadspetfoods.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">GT</div>
+                <div class="site">Gravy Train</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="gravytraindog">SB</a>
+                    <a href="https://s6-gravytraindog.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://gravytraindog.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">KB</div>
+                <div class="site">Kibbles-n-Bits</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="kibblesnbits">SB</a>
+                    <a href="https://s6-kibblesnbits.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://kibblesnbits.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">MM</div>
+                <div class="site">Meow Mix</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="meowmix">SB</a>
+                    <a href="https://s6-meowmix.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://meowmix.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">MB</div>
+                <div class="site">Milk Bone</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="milkbone">SB</a>
+                    <a href="https://s6-milkbone.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://milkbone.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">MB</div>
+                <div class="site">Milk Bone (LEGACY)</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="milkbonelegacy">SB</a>
+                    <a href="https://s6e-milkbone.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://p6e-milkbone.jmsinf.com/" target="_blank">PRD</a>
+                </div></li>
+                <li>
+                    <div class="name">MB</div>
+                    <div class="site">Milk Bone Share The Care</div>
+                    <div class="links">
+                        <a href="#" class="sblink" target="_blank" data-name="sharethecare-milkbone">SB</a>
+                        <a href="https://s6-sharethecare-milkbone.jmsinf.com/" target="_blank">STG</a>
+                        <a href="https://sharethecare.milkbone.com/" target="_blank">PRD</a>
+                    </div></li>
+            <li>
+                <div class="name">MK</div>
+                <div class="site">Milo's Kitchen</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="miloskitchen">SB</a>
+                    <a href="https://s6-miloskitchen.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://miloskitchen.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">NB</div>
+                <div class="site">Natural Balance</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="naturalbalanceinc">SB</a>
+                    <a href="https://s6-naturalbalanceinc.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://naturalbalanceinc.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">NR</div>
+                <div class="site">Natures Recipe</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="naturesrecipe">SB</a>
+                    <a href="https://s6-naturesrecipe.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://naturesrecipe.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">NUT</div>
+                <div class="site">Nutrish</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="nutrish">SB</a>
+                    <a href="https://s6-nutrish.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://nutrish.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">PNC</div>
+                <div class="site">Pounce Treats</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="pouncetreats">SB</a>
+                    <a href="https://s6-pouncetreats.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://pouncetreats.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">JMSPC</div>
+                <div class="site">JMS Profile Center</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="jmsmucker">SB</a>
+                    <a href="https://s-profile-jmsmucker.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://profile.jmsmucker.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">PUP</div>
+                <div class="site">Pupperoni</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="pupperoni">SB</a>
+                    <a href="https://s6-pupperoni.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://pupperoni.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">SNA</div>
+                <div class="site">Snausages</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="snausages">SB</a>
+                    <a href="https://s6-snausages.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://snausages.com/" target="_blank">PRD</a>
+                </div></li>
+            <li class="li-auth">
+                <div class="name">AUTH</div>
+                <div class="site"></div>
+                <div class="links">
+                    <a href="#" class="sblink auth" target="_blank" data-name="">SB</a>
+                    <a href="https://s-pmc6-mkt-pet-admin.jmsinf.com/admin" target="_blank">STG</a>
+                    <a href="https://p-pmc6-mkt-pet-admin.jmsinf.com/admin" target="_blank">PRD</a>
+                </div></li>
+        </ul>
+    </div>
+
+    <div class="col stack">
+        <h4>COFFEE</h4>
+        <div class="port">
+            <fieldset id="c_fs-port" class="fs-port"><label>SB PORT:</label>
+                <input type="radio" id="c_none" value="" name="c_port" class="first-rdo"><label for="c_none">None</label>
+                <input type="radio" id="c_20001" value="20001" name="c_port"><label for="c_20001">20001</label>
+                <input type="radio" id="c_20002" value="20002" name="c_port"><label for="c_20002">20002</label>
+            </fieldset>
+        </div>
+        <ul>
+            <li>
+                <div class="name">DAH</div>
+                <div class="site">Dunkin’ at Home</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="dunkinathome">SB</a>
+                    <a href="https://s6-dunkinathome.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://dunkinathome.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">CAB</div>
+                <div class="site">Café Bustelo</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="cafebustelo">SB</a>
+                    <a href="https://s6-cafebustelo.jmsinf.com/en" target="_blank">STG</a>
+                    <a href="https://cafebustelo.com/en" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">1850</div>
+                <div class="site">1850 Coffee</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="1850coffee">SB</a>
+                    <a href="https://s6-1850coffee.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://1850coffee.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">MDO</div>
+                <div class="site">Medaglia d’Oro</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="medagliadoro">SB</a>
+                    <a href="https://s6-medagliadoro.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://medagliadoro.com/" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">PIL</div>
+                <div class="site">Cafe Pilon</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="cafepilon">SB</a>
+                    <a href="https://s6-cafepilon.jmsinf.com/en" target="_blank">STG</a>
+                    <a href="https://cafepilon.com/en" target="_blank">PRD</a>
+                </div></li>
+            <li>
+                <div class="name">FOL</div>
+                <div class="site">Folgers</div>
+                <div class="links">
+                    <a href="#" class="sblink" target="_blank" data-name="folgerscoffee">SB</a>
+                    <a href="https://s6-folgerscoffee.jmsinf.com/" target="_blank">STG</a>
+                    <a href="https://folgerscoffee.com/" target="_blank">PRD</a>
+                </div></li>
+            <li class="li-auth">
+                <div class="name">AUTH</div>
+                <div class="site"></div>
+                <div class="links">
+                    <a href="#" class="sblink auth" target="_blank" data-name="">SB</a>
+                    <a href="https://s-pmc6-mkt-coffee-admin.jmsinf.com/admin/login" target="_blank">STG</a>
+                    <a href="https://p-pmc6-mkt-coffee-admin.jmsinf.com/admin/login" target="_blank">PRD</a>
+                </div></li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="content footer">
+    <div class="content-wrapper">
+        <ul>
+            <li><a href="https://adoporrwwwa.na.jmsmucker.com/jms/CX/_dashboards/directory" target="_blank">TFS</a></li>
+            <li><a href="https://git.jmsinf.com/documentation/wiki/-/wikis/home" target="_blank">WIKI</a></li>
+            <li><a href="https://jmsmucker.sharepoint.com/sites/Teams/T94/Shared%20Documents/Forms/AllItems.aspx?e=5%3Abd33108b0cbe4d36819fc37e8f3c6caa&at=9&RootFolder=%2Fsites%2FTeams%2FT94%2FShared%20Documents%2FEnterprise%2FPimcore%20Documentation&FolderCTID=0x012000CC5241C486340B4785847601A92C6C8B" target="_blank">Enterprise Pimcore documentation</a></li>
+            <li><a href="https://git.jmsinf.com/" target="_blank">GITLab</a></li>
+        </ul>
+        <ul>
+            <li><a href="https://jmsmucker.sharepoint.com/sites/neighborhood" target="_blank">Smucker's Intranet</a></li>
+            <li>Helpdesk: 330-684-3911</li>
+        </ul>
+        <ul>
+            <li><a href="https://twig.symfony.com/" target="_blank">Twig documentation</a></li>            
+            <li><a href="https://pimcore.com/docs/pimcore/current/Development_Documentation/Documents/index.html" target="_blank">Pimcore Documentation</a></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+
+const topsection = document.querySelector('.topsection');
+const radios = document.querySelectorAll('input[type="radio"]');
+const sandboxid = document.querySelector('.sandbox-settings input[name="sbid"]');
+
+function init () {
+    sandboxIdChanged();
+    sandboxid.addEventListener('change', (event) => {
+        sandboxIdChanged();
+    });
+    for (let i = radios.length; i--;) {
+        radios[i].addEventListener('click', (e) => {
+            rdoPortChanged(e);
+        });
+    }
+}
+
+function sandboxIdChanged() {
+    for (let i = radios.length; i--;) {
+        radios[i].checked = false;
+    }
+    const firstRdo = document.querySelectorAll('.first-rdo');
+    for (let i = firstRdo.length; i--;) {
+        firstRdo[i].checked = true;
+    }
+    if (sandboxid.value.trim() == '') {
+        topsection.classList.add("nosb");
+    } else {
+        topsection.classList.remove("nosb");     
+        createLinksSbChanged(sandboxid.value.trim());
+    }
+}
+
+function createLinksSbChanged(sandboxid) {
+    let sblinks = document.getElementsByClassName('sblink');
+    let sblink = [].slice.call(sblinks);
+    let prefix = isNaN(sandboxid) ? '' : 'sb';
+    for (let i = sblink.length; i--;) {
+        let extension = '';
+        if (sblink[i].dataset.name == 'cafepilon' || sblink[i].dataset.name == 'cafebustelo') {
+            extension = '/en';
+        }
+        if (sblink[i].classList.contains('auth')) {
+            sblink[i].setAttribute('href', 'https://' + prefix + sandboxid + sblink[i].dataset.name + '.jmsinf.com' + '/admin/login');
+        } else {
+            sblink[i].setAttribute('href', 'https://' + prefix + sandboxid + '-' + sblink[i].dataset.name + '.jmsinf.com' + extension);
+        }
+    }
+}
+
+function rdoPortChanged(e) {
+    let parentContainer = e.target.closest('.stack');
+    let sblinks = parentContainer.getElementsByClassName('sblink');
+    let sblink = [].slice.call(sblinks);
+    let suffix = e.target.value !== '' ? ':' + e.target.value : '';
+    let prefix = isNaN(sandboxid.value.trim()) ? '' : 'sb';
+    for (let i = sblink.length; i--; ) {
+        let extension = '';
+        if (sblink[i].dataset.name == 'cafepilon' || sblink[i].dataset.name == 'cafebustelo') {
+            extension = 'en';
+        }
+        if (sblink[i].classList.contains('auth')) {
+            sblink[i].setAttribute('href', 'https://' + prefix + sandboxid.value.trim() + sblink[i].dataset.name + '.jmsinf.com'+ suffix + '/admin/login');
+        } else {
+            sblink[i].setAttribute('href', 'https://'+ prefix + sandboxid.value.trim() + '-' + sblink[i].dataset.name + '.jmsinf.com'+ suffix + '/' + extension);
+        }
+    }
+};
+
+init();
+
+</script>
+
+</body>
+</html>
